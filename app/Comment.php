@@ -3,16 +3,17 @@
 namespace App;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
-use Spatie\MediaLibrary\Models\Media;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use \DateTimeInterface;
 
 class Comment extends Model implements HasMedia
 {
-    use SoftDeletes, HasMediaTrait;
+    use SoftDeletes, InteractsWithMedia, HasFactory;
 
     public $table = 'comments';
 
@@ -38,7 +39,6 @@ class Comment extends Model implements HasMedia
         'approved',
         'agent',
         'type',
-        'parent_id',
         'approved_date',
         'created_at',
         'updated_at',
@@ -50,15 +50,10 @@ class Comment extends Model implements HasMedia
         return $date->format('Y-m-d H:i:s');
     }
 
-    public function registerMediaConversions(Media $media = null)
+    public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')->fit('crop', 50, 50);
         $this->addMediaConversion('preview')->fit('crop', 120, 120);
-    }
-
-    public function parentComments()
-    {
-        return $this->hasMany(Comment::class, 'parent_id', 'id');
     }
 
     public function page()
@@ -89,11 +84,6 @@ class Comment extends Model implements HasMedia
     public function setDateGmtAttribute($value)
     {
         $this->attributes['date_gmt'] = $value ? Carbon::createFromFormat(config('panel.date_format') . ' ' . config('panel.time_format'), $value)->format('Y-m-d H:i:s') : null;
-    }
-
-    public function parent()
-    {
-        return $this->belongsTo(Comment::class, 'parent_id');
     }
 
     public function getApprovedDateAttribute($value)

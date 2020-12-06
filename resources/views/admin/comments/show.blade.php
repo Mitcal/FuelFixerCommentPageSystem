@@ -121,14 +121,6 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.comment.fields.parent') }}
-                        </th>
-                        <td>
-                            {{ $comment->parent->author_email ?? '' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
                             {{ trans('cruds.comment.fields.approved_date') }}
                         </th>
                         <td>
@@ -146,22 +138,6 @@
     </div>
 </div>
 
-<div class="card">
-    <div class="card-header">
-        {{ trans('global.relatedData') }}
-    </div>
-    <ul class="nav nav-tabs" role="tablist" id="relationship-tabs">
-        <li class="nav-item">
-            <a class="nav-link" href="#parent_comments" role="tab" data-toggle="tab">
-                {{ trans('cruds.comment.title') }}
-            </a>
-        </li>
-    </ul>
-    <div class="tab-content">
-        <div class="tab-pane" role="tabpanel" id="parent_comments">
-            @includeIf('admin.comments.relationships.parentComments', ['comments' => $comment->parentComments])
-        </div>
-    </div>
-</div>
+
 
 @endsection

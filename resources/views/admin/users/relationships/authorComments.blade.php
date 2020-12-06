@@ -46,9 +46,6 @@
                             {{ trans('cruds.comment.fields.approved') }}
                         </th>
                         <th>
-                            {{ trans('cruds.comment.fields.parent') }}
-                        </th>
-                        <th>
                             &nbsp;
                         </th>
                     </tr>
@@ -83,9 +80,6 @@
                             <td>
                                 <span style="display:none">{{ $comment->approved ?? '' }}</span>
                                 <input type="checkbox" disabled="disabled" {{ $comment->approved ? 'checked' : '' }}>
-                            </td>
-                            <td>
-                                {{ $comment->parent->author_email ?? '' }}
                             </td>
                             <td>
                                 @can('comment_show')

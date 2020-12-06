@@ -167,8 +167,6 @@ return [
             'agent_helper'         => ' ',
             'type'                 => 'Type',
             'type_helper'          => ' ',
-            'parent'               => 'Parent',
-            'parent_helper'        => ' ',
             'approved_date'        => 'Approved Date',
             'approved_date_helper' => ' ',
         ],
