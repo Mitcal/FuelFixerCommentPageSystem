@@ -2,13 +2,14 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use \DateTimeInterface;
 
 class ContentCategory extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
 
     public $table = 'content_categories';
 

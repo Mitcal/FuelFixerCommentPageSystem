@@ -20,7 +20,7 @@ class CommentsApiController extends Controller
     {
         abort_if(Gate::denies('comment_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new CommentResource(Comment::with(['page', 'author', 'parent'])->get());
+        return new CommentResource(Comment::with(['page', 'author'])->get());
     }
 
     public function store(StoreCommentRequest $request)
@@ -36,7 +36,7 @@ class CommentsApiController extends Controller
     {
         abort_if(Gate::denies('comment_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new CommentResource($comment->load(['page', 'author', 'parent']));
+        return new CommentResource($comment->load(['page', 'author']));
     }
 
     public function update(UpdateCommentRequest $request, Comment $comment)

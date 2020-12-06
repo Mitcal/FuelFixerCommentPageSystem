@@ -46,9 +46,6 @@
                         {{ trans('cruds.comment.fields.approved') }}
                     </th>
                     <th>
-                        {{ trans('cruds.comment.fields.parent') }}
-                    </th>
-                    <th>
                         &nbsp;
                     </th>
                 </tr>
@@ -112,7 +109,6 @@
 { data: 'author_email', name: 'author_email' },
 { data: 'date_gmt', name: 'date_gmt' },
 { data: 'approved', name: 'approved' },
-{ data: 'parent_author_email', name: 'parent.author_email' },
 { data: 'actions', name: '{{ trans('global.actions') }}' }
     ],
     orderCellsTop: true,

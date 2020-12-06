@@ -10,11 +10,9 @@ class AddRelationshipFieldsToCommentsTable extends Migration
     {
         Schema::table('comments', function (Blueprint $table) {
             $table->unsignedBigInteger('page_id')->nullable();
-            $table->foreign('page_id', 'page_fk_2738252')->references('id')->on('content_pages');
+            $table->foreign('page_id', 'page_fk_2738801')->references('id')->on('content_pages');
             $table->unsignedBigInteger('author_id')->nullable();
-            $table->foreign('author_id', 'author_fk_2738253')->references('id')->on('users');
-            $table->unsignedBigInteger('parent_id')->nullable();
-            $table->foreign('parent_id', 'parent_fk_2738433')->references('id')->on('comments');
+            $table->foreign('author_id', 'author_fk_2738802')->references('id')->on('users');
         });
     }
 }

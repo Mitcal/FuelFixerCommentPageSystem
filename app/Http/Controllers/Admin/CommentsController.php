@@ -12,7 +12,7 @@ use App\Http\Requests\UpdateCommentRequest;
 use App\User;
 use Gate;
 use Illuminate\Http\Request;
-use Spatie\MediaLibrary\Models\Media;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -25,7 +25,7 @@ class CommentsController extends Controller
         abort_if(Gate::denies('comment_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         if ($request->ajax()) {
-            $query = Comment::with(['page', 'author', 'parent'])->select(sprintf('%s.*', (new Comment)->table));
+            $query = Comment::with(['page', 'author'])->select(sprintf('%s.*', (new Comment)->table));
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');
@@ -70,11 +70,8 @@ class CommentsController extends Controller
             $table->editColumn('approved', function ($row) {
                 return '<input type="checkbox" disabled ' . ($row->approved ? 'checked' : null) . '>';
             });
-            $table->addColumn('parent_author_email', function ($row) {
-                return $row->parent ? $row->parent->author_email : '';
-            });
 
-            $table->rawColumns(['actions', 'placeholder', 'page', 'author', 'approved', 'parent']);
+            $table->rawColumns(['actions', 'placeholder', 'page', 'author', 'approved']);
 
             return $table->make(true);
         }
@@ -90,9 +87,7 @@ class CommentsController extends Controller
 
         $authors = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $parents = Comment::all()->pluck('author_email', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        return view('admin.comments.create', compact('pages', 'authors', 'parents'));
+        return view('admin.comments.create', compact('pages', 'authors'));
     }
 
     public function store(StoreCommentRequest $request)
@@ -114,11 +109,9 @@ class CommentsController extends Controller
 
         $authors = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $parents = Comment::all()->pluck('author_email', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $comment->load('page', 'author');
 
-        $comment->load('page', 'author', 'parent');
-
-        return view('admin.comments.edit', compact('pages', 'authors', 'parents', 'comment'));
+        return view('admin.comments.edit', compact('pages', 'authors', 'comment'));
     }
 
     public function update(UpdateCommentRequest $request, Comment $comment)
@@ -132,7 +125,7 @@ class CommentsController extends Controller
     {
         abort_if(Gate::denies('comment_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $comment->load('page', 'author', 'parent', 'parentComments');
+        $comment->load('page', 'author');
 
         return view('admin.comments.show', compact('comment'));
     }
