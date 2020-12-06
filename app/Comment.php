@@ -16,10 +16,6 @@ class Comment extends Model implements HasMedia
 
     public $table = 'comments';
 
-    public static $searchable = [
-        'content',
-    ];
-
     protected $dates = [
         'date',
         'date_gmt',
