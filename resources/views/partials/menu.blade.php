@@ -7,11 +7,6 @@
     </div>
 
     <ul class="c-sidebar-nav">
-        <li>
-            <select class="searchable-field form-control">
-
-            </select>
-        </li>
         <li class="c-sidebar-nav-item">
             <a href="{{ route("admin.home") }}" class="c-sidebar-nav-link">
                 <i class="c-sidebar-nav-icon fas fa-fw fa-tachometer-alt">
