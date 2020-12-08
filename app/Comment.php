@@ -6,16 +6,17 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use \DateTimeInterface;
 
-class Comment extends Model implements HasMedia
+class Comment extends Model
 {
-    use SoftDeletes, InteractsWithMedia, HasFactory;
+    use SoftDeletes,   HasFactory;
 
     public $table = 'comments';
+
+    public static $searchable = [
+        'content',
+    ];
 
     protected $dates = [
         'date',
@@ -94,5 +95,10 @@ class Comment extends Model implements HasMedia
     public function setApprovedDateAttribute($value)
     {
         $this->attributes['approved_date'] = $value ? Carbon::createFromFormat(config('panel.date_format') . ' ' . config('panel.time_format'), $value)->format('Y-m-d H:i:s') : null;
+    }
+	
+	  public function replies()
+    {
+        return $this->hasMany(Comment::class, 'parent_id')->where('approved',1);
     }
 }
